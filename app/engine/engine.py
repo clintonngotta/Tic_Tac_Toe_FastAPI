@@ -145,15 +145,17 @@ def play_game( current_player='x', state=''):
     vo_val = np.load(os.path.join(sv_path, 'vo.npy'))
     x_agent = AgentEval(env.x, vx_val)
     o_agent = AgentEval(env.o, vo_val)
+    next_move = ""
     if current_player == 'x':
-       x_agent.take_action(env)
+       next_move = x_agent.take_action(env)
     else:
-       o_agent.take_action(env)
+        next_move = o_agent.take_action(env)
     return {
         "is_game_over": env.game_over(),
         "board": env.board.tolist(),      
         "winner": env.winner,
-        "is_draw": env.is_draw()        
+        "is_draw": env.is_draw(),
+        "next_move":next_move        
     }
        
  

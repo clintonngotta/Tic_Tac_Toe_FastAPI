@@ -1,12 +1,12 @@
 from fastapi import APIRouter,HTTPException
 from fastapi.responses import JSONResponse
-from app.api.schemas import GameStatusResponse, BoardStateCheckModel, BoardStateModel, GameStateEnum
+from app.api.schemas import GameStatusResponse,GamePlayResponse, BoardStateCheckModel, BoardStateModel, GameStateEnum
 
 from app.engine.engine import play_game,get_game_status, reset_game
 
 router = APIRouter(tags=["play"])
 
-@router.post("/play", response_model=GameStatusResponse)
+@router.post("/play", response_model=GamePlayResponse)
 def play(state: BoardStateModel):           
     try: 
         status =  play_game(state.current_player,state.state) 

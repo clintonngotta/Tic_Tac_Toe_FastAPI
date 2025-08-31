@@ -19,6 +19,15 @@ class GameStateEnum(StrEnum):
     ongoing="ongoing"
 
 
+class GamePlayResponse(BaseModel):
+    """Response model for game status"""
+    is_game_over: bool
+    board:  Optional[List[List[int]]] = None
+    winner: Optional[str] = None
+    is_draw: bool
+    state: GameStateEnum
+    next_move: str
+
 class GameStatusResponse(BaseModel):
     """Response model for game status"""
     is_game_over: bool
@@ -26,7 +35,7 @@ class GameStatusResponse(BaseModel):
     winner: Optional[str] = None
     is_draw: bool
     state: GameStateEnum
-
+    
 class BoardStateModel(BaseModel):
     state: List[List[CellValue]]
     current_player: CurrentPlayer
