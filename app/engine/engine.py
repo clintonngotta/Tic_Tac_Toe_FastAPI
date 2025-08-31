@@ -133,35 +133,80 @@ class Environment:
         print("-------------------")
 
 
+
+
+# Provide path to common folder enclosing 'vx.npy' and 'vo.npy'
+def play_game( current_player='x', state=''):
+    env = Environment()
+    env.set_state(np.array(state))
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    sv_path = os.path.join(base_dir, "npy")    
+    vx_val = np.load(os.path.join(sv_path, 'vx.npy'))
+    vo_val = np.load(os.path.join(sv_path, 'vo.npy'))
+    x_agent = AgentEval(env.x, vx_val)
+    o_agent = AgentEval(env.o, vo_val)
+    if current_player == 'x':
+       x_agent.take_action(env)
+    else:
+       o_agent.take_action(env)
+    return {
+        "is_game_over": env.game_over(),
+        "board": env.board.tolist(),      
+        "winner": env.winner,
+        "is_draw": env.is_draw()        
+    }
+       
+ 
+def get_game_status(state):
+    env = Environment()
+    env.set_state(np.array(state))       
+    return {
+        "is_game_over": env.game_over(),
+        "board": env.board.tolist(),      
+        "winner": env.winner,
+        "is_draw": env.is_draw(),        
+    }
+
+def reset_game():
+    env = Environment()    
+    env.set_state(np.zeros((LENGTH, LENGTH)))    
+    return env.board.tolist()
+
 # Example Usage
-#
+
 # if __name__ == '__main__':
-#
+
 #     # Provide a State
 #     # Symbols X: represented by -1 and O: represented by +1
-#     state = [[0, 0, 0],
-#              [0, 0, 0],
-#              [0, 0, 0]]
-#
+#     state = [[-1, 1, -1],
+#              [-1, 1, 1],
+#              [0, -1, -1]]
+
 #     # Provide a Player
 #     # Symbols X: represented by 'x' and O: represented by 'o'
-#     current_player = 'x'
-#
-#     # Provide path to common folder enclosing 'vx.npy' and 'vo.npy'
-#     sv_path = './npy'
-#
-#     env = Environment()
-#     env.set_state(np.array(state))
-#
-#     def get_next_action(env, symbol='x', sv_path=''):
-#         vx_val = np.load(os.path.join(sv_path, 'vx.npy'))
-#         vo_val = np.load(os.path.join(sv_path, 'vo.npy'))
-#         x_agent = AgentEval(env.x, vx_val)
-#         o_agent = AgentEval(env.o, vo_val)
-#         if symbol == 'x':
-#             return x_agent.take_action(env)
-#         else:
-#             return o_agent.take_action(env)
-#
-#     best_move = get_next_action(env, symbol=current_player, sv_path=sv_path)
-#     env.draw_board()
+#     current_player = 'O'
+
+    # # Provide path to common folder enclosing 'vx.npy' and 'vo.npy'
+    # base_dir = os.path.dirname(os.path.abspath(__file__))
+    # sv_path = os.path.join(base_dir, "npy")
+    
+    # env = Environment()
+    # env.set_state(np.array(state))
+
+    # print("status::::::", get_game_status(state))
+    # def get_next_action(env, symbol='x', sv_path=''):
+    #     vx_val = np.load(os.path.join(sv_path, 'vx.npy'))
+    #     vo_val = np.load(os.path.join(sv_path, 'vo.npy'))
+    #     x_agent = AgentEval(env.x, vx_val)
+    #     o_agent = AgentEval(env.o, vo_val)
+    #     if symbol == 'x':
+    #         return x_agent.take_action(env)
+    #     else:
+    #         return o_agent.take_action(env)
+
+    # # best_move = get_next_action(env, symbol=current_player, sv_path=sv_path)
+    # print(" env.board:", env.board)
+    # print("game_over:",env.game_over())
+    # # print("best_move:",best_move)
+    # print("winner:",env.winner)
+    # env.draw_board()
