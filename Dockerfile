@@ -10,7 +10,7 @@ WORKDIR /play
 COPY ./requirements.txt /play/requirements.txt
 
 RUN pip install --no-cache-dir --upgrade -r /play/requirements.txt
-
+# pip install --upgrade pip
 
 COPY ./app /play/app
 
